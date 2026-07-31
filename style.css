@@ -1,0 +1,45 @@
+/* Import the Nippo display font from Fontshare */
+@import url('https://api.fontshare.com/v2/css?f[]=nippo@200,300,400,500,700&display=swap');
+
+/* Global reset: remove default margins/padding and use border-box sizing */
+* { margin:0; padding:0; box-sizing:border-box }
+
+/* Dark full-viewport layout centered on the page */
+body { font-family:'Nippo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#000; color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center }
+
+/* Main container: fixed width, padded */
+main { width:100%; max-width:420px; padding:2rem }
+
+/* Title styling: uppercase, wide letter-spacing, light weight */
+h1 { font-size:1.25rem; font-weight:300; letter-spacing:.2em; text-transform:uppercase; text-align:center; margin-bottom:.25rem }
+
+/* Subtitle tagline under the title */
+.tag { text-align:center; font-size:.7rem; color:#333; letter-spacing:.1em; margin-bottom:2rem }
+
+/* Card wrapper around the converter controls */
+.box { background:#0a0a0a; border:1px solid #1a1a1a; border-radius:4px; padding:1.25rem }
+
+/* Horizontal row holding the mode badge and input */
+.row { display:flex; align-items:center; gap:.75rem }
+
+/* Mode toggle badge (BIN / DEC) */
+.badge { font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; padding:.25rem .5rem; border-radius:2px; background:#111; color:#444; white-space:nowrap; cursor:pointer; transition:all .15s; user-select:none }
+/* Active mode: inverted colors */
+.badge.active { background:#fff; color:#000 }
+.badge:hover { opacity:.7 }
+
+/* Text input: monospace, dark theme, left-to-right direction */
+input { flex:1; padding:.7rem; background:#111; border:1px solid #222; border-radius:4px; color:#fff; font-size:1rem; font-family:'SF Mono','Cascadia Code','Consolas',monospace; outline:0; transition:border .15s; direction:ltr }
+input:focus { border-color:#fff }
+input::placeholder { color:#333 }
+
+/* Result output area: monospace, selectable on click */
+.out { margin-top:.75rem; padding:.7rem; background:#111; border:1px solid #222; border-radius:4px; color:#fff; font-size:1rem; font-family:'SF Mono','Cascadia Code','Consolas',monospace; min-height:1rem; user-select:all; word-break:break-all }
+/* Error state: red text and border */
+.out.err { color:#ff4444; border-color:#442222 }
+
+/* Small hint below the output showing the conversion direction */
+.hint { margin-top:.5rem; font-size:.7rem; color:#222; text-align:center; letter-spacing:.02em }
+
+/* Footer caption */
+footer { margin-top:2rem; text-align:center; font-size:.65rem; color:#181818; letter-spacing:.1em }

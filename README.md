@@ -1,6 +1,6 @@
 # B2D
 
-A minimal, dark-themed binary &harr; decimal converter. Type in one base and instantly get the other — no dependencies, no build step, just a single HTML file.
+A minimal, dark-themed binary &harr; decimal converter. Type in one base and instantly get the other — no dependencies, no build step, just HTML, CSS and JavaScript.
 
 ## Features
 
@@ -23,7 +23,9 @@ Open `index.html` in any modern browser. No server or dependencies required.
 
 ```
 B2D/
-├── index.html   # The complete application (styles, markup, and logic)
+├── index.html   # Markup and structure
+├── style.css    # All styling (dark theme)
+├── script.js    # Conversion logic (binary <-> decimal)
 ├── LICENSE      # MIT license
 └── README.md    # This file
 ```
