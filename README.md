@@ -13,7 +13,8 @@ A minimal, dark-themed binary &harr; decimal converter. Type in one base and ins
 - **Mode toggle** by clicking the `BIN` / `DEC` badge, or with the `B` / `D` keys
 - **Copy on click** — output copies to the clipboard (with a `copied` flash); `Enter` also works
 - **Error feedback** with a physical shake for invalid input (non-binary characters, negative numbers)
-- **Hidden details**: the tab title mirrors the live result; digits use tabular numerals so they never jitter; reduced-motion is respected
+- **Built-in tutorial** — a "How it works?" modal with a light-up place-value table; open it via `?` / `H` or `index.html#tutorial`
+- **Hidden details**: the tab title mirrors the live result; digits use tabular numerals so they never jitter; reduced-motion is respected; system font stacks load no network fonts; SVG+PNG favicons included
 
 ## Usage
 
@@ -27,11 +28,17 @@ Open `index.html` in any modern browser. No server or dependencies required.
 
 ```
 B2D/
-├── index.html   # Markup and structure
-├── style.css    # All styling (dark theme)
-├── script.js    # Conversion logic (binary <-> decimal)
-├── LICENSE      # MIT license
-└── README.md    # This file
+├── index.html            # Markup and structure
+├── assets/
+│   ├── css/style.css     # All styling (dark theme)
+│   ├── js/script.js      # Conversion logic + tutorial modal
+│   └── icons/            # Favicon (SVG source + PNG fallbacks)
+│       ├── favicon.svg
+│       ├── favicon-32.png
+│       ├── favicon-16.png
+│       └── apple-touch-icon.png
+├── LICENSE               # MIT license
+└── README.md             # This file
 ```
 
 ## Example
