@@ -1,4 +1,4 @@
-# B2D
+/# B2D
 
 A minimal, dark-themed binary &harr; decimal converter. Type in one base and instantly get the other — no dependencies, no build step, just HTML, CSS and JavaScript.
 
