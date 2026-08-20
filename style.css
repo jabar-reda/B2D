@@ -2,13 +2,30 @@
 @import url('https://api.fontshare.com/v2/css?f[]=nippo@200,300,400,500,700&display=swap');
 
 /* Global reset: remove default margins/padding and use border-box sizing */
-* { margin:0; padding:0; box-sizing:border-box }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent }
 
-/* Dark full-viewport layout centered on the page */
-body { font-family:'Nippo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#000; color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center }
+/* Dark native form controls (autofill, spinners, scrollbars follow the theme) */
+:root { color-scheme:dark }
 
-/* Main container: fixed width, padded */
-main { width:100%; max-width:420px; padding:2rem }
+/* Text selection: inverted, on-brand */
+::selection { background:#fff; color:#000 }
+
+/* Dark full-viewport layout with a faint top glow for depth */
+body {
+  font-family:'Nippo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:
+    radial-gradient(120% 80% at 50% -12%, rgba(255,255,255,.045), transparent 55%),
+    #000;
+  color:#fff;
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+
+/* Main container: fixed width, padded, subtle entrance rise */
+main { width:100%; max-width:420px; padding:2rem; animation:rise .5s ease }
 
 /* Title styling: uppercase, wide letter-spacing, light weight */
 h1 { font-size:1.25rem; font-weight:300; letter-spacing:.2em; text-transform:uppercase; text-align:center; margin-bottom:.25rem }
@@ -16,30 +33,86 @@ h1 { font-size:1.25rem; font-weight:300; letter-spacing:.2em; text-transform:upp
 /* Subtitle tagline under the title */
 .tag { text-align:center; font-size:.7rem; color:#333; letter-spacing:.1em; margin-bottom:2rem }
 
-/* Card wrapper around the converter controls */
-.box { background:#0a0a0a; border:1px solid #1a1a1a; border-radius:4px; padding:1.25rem }
+/* Card wrapper with a faint inner top highlight for physical depth */
+.box { background:#0a0a0a; border:1px solid #1a1a1a; border-radius:4px; padding:1.25rem; box-shadow:inset 0 1px 0 rgba(255,255,255,.03) }
 
 /* Horizontal row holding the mode badge and input */
 .row { display:flex; align-items:center; gap:.75rem }
 
 /* Mode toggle badge (BIN / DEC) */
-.badge { font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; padding:.25rem .5rem; border-radius:2px; background:#111; color:#444; white-space:nowrap; cursor:pointer; transition:all .15s; user-select:none }
+.badge {
+  font-size:.6rem; letter-spacing:.1em; text-transform:uppercase;
+  padding:.25rem .5rem; border-radius:2px;
+  background:#111; color:#444; white-space:nowrap; cursor:pointer;
+  transition:all .15s; user-select:none;
+}
 /* Active mode: inverted colors */
 .badge.active { background:#fff; color:#000 }
 .badge:hover { opacity:.7 }
+/* Tactile press feedback */
+.badge:active { transform:scale(.94) }
+/* Subtle bounce when the mode is switched */
+.badge.pop { animation:pop .3s ease }
+/* Keyboard-only focus indicator */
+.badge:focus-visible { outline:1px solid #555; outline-offset:2px }
 
 /* Text input: monospace, dark theme, left-to-right direction */
-input { flex:1; padding:.7rem; background:#111; border:1px solid #222; border-radius:4px; color:#fff; font-size:1rem; font-family:'SF Mono','Cascadia Code','Consolas',monospace; outline:0; transition:border .15s; direction:ltr }
-input:focus { border-color:#fff }
+input {
+  flex:1; padding:.7rem;
+  background:#111; border:1px solid #222; border-radius:4px;
+  color:#fff; font-size:1rem;
+  font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+  outline:0; direction:ltr;
+  caret-color:#fff;
+  font-variant-numeric:tabular-nums;
+  color-scheme:dark;
+  transition:border .15s, box-shadow .15s;
+}
+input:hover { border-color:#2b2b2b }
+input:focus { border-color:#fff; box-shadow:0 0 0 1px rgba(255,255,255,.12) }
 input::placeholder { color:#333 }
 
-/* Result output area: monospace, selectable on click */
-.out { margin-top:.75rem; padding:.7rem; background:#111; border:1px solid #222; border-radius:4px; color:#fff; font-size:1rem; font-family:'SF Mono','Cascadia Code','Consolas',monospace; min-height:1rem; user-select:all; word-break:break-all }
-/* Error state: red text and border */
-.out.err { color:#ff4444; border-color:#442222 }
+/* Result output area: monospace, selectable on click, tabular digits (never jitter) */
+.out {
+  margin-top:.75rem; padding:.7rem;
+  background:#111; border:1px solid #222; border-radius:4px;
+  color:#fff; font-size:1rem;
+  font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+  min-height:1rem; user-select:all; word-break:break-all;
+  font-variant-numeric:tabular-nums;
+  cursor:pointer;
+  transition:border-color .15s, background-color .15s;
+}
+.out:hover { border-color:#2b2b2b }
+/* One-time pulse whenever a new result is rendered */
+.out.flash { animation:flash .3s ease }
+/* Error state: red text, border, and a quick physical shake */
+.out.err { color:#ff4444; border-color:#442222; animation:shake .28s ease }
 
-/* Small hint below the output showing the conversion direction */
-.hint { margin-top:.5rem; font-size:.7rem; color:#222; text-align:center; letter-spacing:.02em }
+/* Small hint below the output showing the conversion direction and bit count */
+.hint {
+  margin-top:.5rem; font-size:.7rem; color:#222;
+  text-align:center; letter-spacing:.02em; transition:color .15s;
+}
+.hint[data-copied] { color:#8a8a8a }
 
 /* Footer caption */
 footer { margin-top:2rem; text-align:center; font-size:.65rem; color:#181818; letter-spacing:.1em }
+
+/* Entrance rise */
+@keyframes rise { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
+/* Mode-switch bounce */
+@keyframes pop { 0%{transform:scale(.92)} 60%{transform:scale(1.06)} 100%{transform:scale(1)} }
+/* Result pulse */
+@keyframes flash { from{opacity:.55} to{opacity:1} }
+/* Error shake */
+@keyframes shake {
+  20%{transform:translateX(-2px)} 45%{transform:translateX(2px)}
+  70%{transform:translateX(-1px)} 90%{transform:translateX(1px)}
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation:none !important; transition:none !important }
+  main { animation:none }
+}

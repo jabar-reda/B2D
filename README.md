@@ -2,22 +2,26 @@
 
 A minimal, dark-themed binary &harr; decimal converter. Type in one base and instantly get the other — no dependencies, no build step, just HTML, CSS and JavaScript.
 
+**Try it live:** <https://jabar-reda.github.io/B2D/>
+
 ## Features
 
-- **Binary &rarr; Decimal**: validate input as `0`/`1` only, output with locale-formatted thousands separators
+- **Binary &rarr; Decimal**: arbitrary precision via `BigInt`, output with locale-formatted thousands separators
 - **Decimal &rarr; Binary**: arbitrary precision via `BigInt`, positive integers only
-- **Instant conversion** on every keystroke
-- **Mode toggle** by clicking the `BIN` / `DEC` badge
-- **Error feedback** for invalid input (non-binary characters, negative numbers)
-- **Copy-friendly output** — the result is selectable with a single click
+- **Flexible parsing**: accepts `0b` / `0x` prefixes and ignores spaces, commas and underscores (`1 0001`, `1_000`)
+- **Instant conversion** on every keystroke, with a live bit-count readout in the hint
+- **Mode toggle** by clicking the `BIN` / `DEC` badge, or with the `B` / `D` keys
+- **Copy on click** — output copies to the clipboard (with a `copied` flash); `Enter` also works
+- **Error feedback** with a physical shake for invalid input (non-binary characters, negative numbers)
+- **Hidden details**: the tab title mirrors the live result; digits use tabular numerals so they never jitter; reduced-motion is respected
 
 ## Usage
 
 Open `index.html` in any modern browser. No server or dependencies required.
 
 1. Enter a value in the input field
-2. Click the `BIN` / `DEC` badge to switch the conversion direction
-3. The result appears below as you type
+2. Click the `BIN` / `DEC` badge (or press `B` / `D`) to switch the conversion direction
+3. The result appears below as you type — click it to copy
 
 ## Project Structure
 

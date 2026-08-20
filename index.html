@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
 <title>B2D · binary/decimal</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -12,10 +13,10 @@
   <div class="tag">binary &harr; decimal</div>
   <div class="box">
     <div class="row">
-      <span class="badge active" id="modeBadge">BIN</span>
-      <input type="text" id="inp" placeholder="1010" autofocus spellcheck="false" autocomplete="off">
+      <span class="badge active" id="modeBadge" role="button" tabindex="0" aria-pressed="true" title="toggle mode · B / D">BIN</span>
+      <input type="text" id="inp" placeholder="1010" autofocus spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" inputmode="decimal" aria-label="value to convert">
     </div>
-    <div class="out" id="out">10</div>
+    <div class="out" id="out" role="status" aria-live="polite" title="click to copy">10</div>
     <div class="hint" id="hint">&rarr; decimal</div>
   </div>
   <footer>B2D converter</footer>
