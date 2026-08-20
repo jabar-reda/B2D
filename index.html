@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#000000">
 <title>B2D · binary/decimal</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,8 +23,33 @@
     <div class="out" id="out" role="status" aria-live="polite" title="click to copy">10</div>
     <div class="hint" id="hint">&rarr; decimal</div>
   </div>
-  <footer>B2D converter</footer>
+  <footer>
+    <span>B2D converter</span>
+    <button class="howbtn" id="how" type="button">How it works?</button>
+  </footer>
 </main>
+
+<dialog id="howdlg" aria-labelledby="howTitle">
+  <div class="dlg-head">
+    <h2 id="howTitle">How binary works</h2>
+    <button class="dlg-x" id="howX" type="button" aria-label="Close tutorial">&times;</button>
+  </div>
+  <p>Our numbers use ten digits, 0&ndash;9. Binary uses only two &mdash; <strong>0</strong> and <strong>1</strong> &mdash; like a light switch: off or on. Every computer stores everything as those two states.</p>
+  <div class="bits" aria-label="Binary 1010 broken into place values">
+    <div class="bit on"><span class="place">8</span><span class="digit">1</span></div>
+    <div class="bit"><span class="place">4</span><span class="digit">0</span></div>
+    <div class="bit on"><span class="place">2</span><span class="digit">1</span></div>
+    <div class="bit"><span class="place">1</span><span class="digit">0</span></div>
+    <span class="bits-eq">= 10</span>
+  </div>
+  <p>Each position is worth double the one to its right &mdash; 1, 2, 4, 8, 16&hellip; A position showing a <strong>1</strong> is counted; one showing a <strong>0</strong> is skipped. So <code>1010</code> means <code>8 + 2 = 10</code>.</p>
+  <ol>
+    <li>Read the positions from the right: 1, 2, 4, 8&hellip;</li>
+    <li>Add the positions that show a <strong>1</strong>.</li>
+    <li>Go the other way by switching the badge to <strong>DEC</strong> and typing a decimal number.</li>
+  </ol>
+  <button class="gotit" id="howGotit" type="button">Got it</button>
+</dialog>
 
 <script src="script.js"></script>
 

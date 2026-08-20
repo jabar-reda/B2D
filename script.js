@@ -117,9 +117,33 @@ document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const typing = e.target === inp;
   if (e.target === badge) return;
+  if (howDlg.open) return;
   if (!typing && (e.key === 'b' || e.key === 'B')) setMode('bin');
   else if (!typing && (e.key === 'd' || e.key === 'D')) setMode('dec');
+  else if (!typing && (e.key === '?' || e.key === 'H' || e.key === 'h')) openHow();
   else if (!typing && e.key === 'Enter') copyResult();
 });
 // Re-run conversion on every keystroke
 inp.addEventListener('input', convert);
+
+// ----- Tutorial modal (native <dialog>: focus trap, Esc, and focus restore for free) -----
+const howBtn = document.getElementById('how');
+const howDlg = document.getElementById('howdlg');
+const howX = document.getElementById('howX');
+const howGotit = document.getElementById('howGotit');
+
+function openHow() {
+  if (typeof howDlg.showModal === 'function') {
+    try { howDlg.showModal(); return; } catch (_) { /* fall through to open() */ }
+  }
+  howDlg.setAttribute('open', '');
+}
+const closeHow = () => { if (howDlg.open) howDlg.close(); };
+
+howBtn.addEventListener('click', openHow);
+howX.addEventListener('click', closeHow);
+howGotit.addEventListener('click', closeHow);
+// Click on the backdrop dismisses the dialog
+howDlg.addEventListener('click', e => { if (e.target === howDlg) closeHow(); });
+// Hidden courtesy: deep-link to the tutorial with index.html#tutorial
+if (location.hash === '#tutorial') openHow();
