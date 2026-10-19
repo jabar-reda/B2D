@@ -5,6 +5,7 @@ const badge = document.getElementById('modeBadge');
 const hint = document.getElementById('hint');
 
 const TITLE = 'B2D · binary/decimal';
+const COPY_FLASH_MS = 1200;
 
 // Arrow label for each mode, reused in the hint and for the copied flash
 const modeArrow = { bin: '&rarr; decimal', dec: '&rarr; binary' };
@@ -14,6 +15,13 @@ let mode = 'bin';
 // Last valid result in raw form, used for tab title + clipboard copy
 let lastResult = '';
 let hintTimer;
+
+// Single predicate: adding a future mode only changes what actually differs
+const isBinaryMode = () => mode === 'bin';
+
+// Shared hint text: direction arrow plus the bit count
+const formatBitHint = bitCount =>
+  `${modeArrow[mode]} &middot; ${bitCount} bit${bitCount === 1 ? '' : 's'}`;
 
 // Strip invisible separators so numbers paste cleanly from anywhere ("1 0001", "1_000")
 const strip = v => v.replace(/[\s_,]/g, '');
@@ -47,7 +55,6 @@ function convert() {
       bits = s.length;
       lastResult = BigInt('0b' + s).toString();
       setOut(BigInt(lastResult).toLocaleString());
-      hint.innerHTML = `${modeArrow[mode]} &middot; ${bits} bit${bits === 1 ? '' : 's'}`;
     } else {
       // Decimal input: accept plain decimal, plus 0b/0x prefixes; parse as BigInt for precision
       let n;
@@ -61,8 +68,8 @@ function convert() {
       bits = bin.length;
       lastResult = bin;
       setOut(bin);
-      hint.innerHTML = `${modeArrow[mode]} &middot; ${bits} bit${bits === 1 ? '' : 's'}`;
     }
+    hint.innerHTML = formatBitHint(bits);
     // Hidden touch: the tab title mirrors the live result
     document.title = `${lastResult} — B2D`;
   } catch (e) {
@@ -77,9 +84,10 @@ function convert() {
 // Switch the conversion mode and update the UI labels
 function setMode(m) {
   mode = m;
-  badge.textContent = m === 'bin' ? 'BIN' : 'DEC';
-  badge.setAttribute('aria-pressed', m === 'bin');
-  badge.classList.toggle('active', m === 'bin');
+  const binary = isBinaryMode();
+  badge.textContent = binary ? 'BIN' : 'DEC';
+  badge.setAttribute('aria-pressed', binary);
+  badge.classList.toggle('active', binary);
   hint.innerHTML = modeArrow[m];
   convert();
   badge.classList.remove('pop');
@@ -94,7 +102,7 @@ function copyResult() {
     hint.innerHTML = 'copied';
     hint.dataset.copied = '';
     clearTimeout(hintTimer);
-    hintTimer = setTimeout(() => { hint.innerHTML = modeArrow[mode]; delete hint.dataset.copied; }, 1200);
+    hintTimer = setTimeout(() => { hint.innerHTML = modeArrow[mode]; delete hint.dataset.copied; }, COPY_FLASH_MS);
   };
   const fallback = () => { out.focus(); out.select(); done(); };
   if (navigator.clipboard && window.isSecureContext) {
@@ -106,17 +114,14 @@ function copyResult() {
 
 // Copy on output click
 out.addEventListener('click', copyResult);
-// Toggle the mode from the badge
-badge.addEventListener('click', () => setMode(mode === 'bin' ? 'dec' : 'bin'));
-// Keyboard support for the badge (Enter / Space)
-badge.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setMode(mode === 'bin' ? 'dec' : 'bin'); }
-});
+// Toggle the mode from the badge (native <button> handles Enter / Space)
+badge.addEventListener('click', () => setMode(isBinaryMode() ? 'dec' : 'bin'));
 // Global shortcuts, only when not typing and not triggering browser chords
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const typing = e.target === inp;
-  if (e.target === badge) return;
+  // The badge's native Enter / Space toggle handles itself; other shortcuts still work while it is focused
+  if (e.target === badge && (e.key === 'Enter' || e.key === ' ')) return;
   if (howDlg.open) return;
   if (!typing && (e.key === 'b' || e.key === 'B')) setMode('bin');
   else if (!typing && (e.key === 'd' || e.key === 'D')) setMode('dec');
